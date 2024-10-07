@@ -9,11 +9,11 @@
 
 ## Структура проекта
 
-/coredns
-/prometheus
-/grafana
-/docker-compose.yaml
-/README.md
+- /coredns
+- /prometheus
+- /grafana
+- /docker-compose.yaml
+- /README.md
 
 ## Используемые технологии
 
