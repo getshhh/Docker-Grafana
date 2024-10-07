@@ -1,0 +1,72 @@
+services:
+  coredns:
+    image: coredns/coredns
+    container_name: dns
+    restart: on-failure
+    ports:
+      - "5053:53"
+    volumes:
+      - ./coredns/config:/etc/coredns:ro
+    command: -conf /etc/coredns/Corefile
+
+    networks:
+      custom_net:
+        ipv4_address: 10.5.0.2
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+    networks:
+      custom_net:
+        ipv4_address: 10.5.0.3
+    dns:
+      - 10.5.0.2
+
+
+  node_exporter:
+    image: prom/node-exporter
+    ports:
+    - 9100:9100
+    networks:
+      custom_net:
+        ipv4_address: 10.5.0.4
+    dns:
+      - 10.5.0.2
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards/json:/var/lib/grafana/dashboards
+    networks:
+      custom_net:
+        ipv4_address: 10.5.0.5
+    dns:
+      - 10.5.0.2
+
+volumes:
+  prom_data:
+
+networks:
+  custom_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
