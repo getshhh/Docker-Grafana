@@ -13,7 +13,7 @@
 ## Используемые технологии
 
 - **Docker**: Для контейнеризации приложений.
-- **Docker Compose**: Для управления многоконтейнерными приложениями.
+**Docker Compose**: Для управления многоконтейнерными приложениями.
 
 ## Запуск проекта
 
@@ -34,42 +34,7 @@
 | Node Exporter| 9100        | 9100              |
 | Grafana      | 3000        | 3000              |
 
-
-#CoreDNS
-
-. {
-    log
-    errors
-    auto
-    reload 10s
-    forward . 1.1.1.1:53
-    hosts /etc/coredns/sosa.com.hosts sosa.com
-}
-
-
-#Prometheus
-
-global:
-  scrape_interval: 15s
-scrape_configs:
-  - job_name: prometheus
-    static_configs:
-      - targets: ['localhost:9090']
-  - job_name: node
-    static_configs:
-      - targets: ['node-exporter:9100']
-
-#Grafana
-
-apiVersion: 1
-
-providers:
-  - name: Default 
-    folder: Services 
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards
-
+  
 #Завершение работы
 
 
