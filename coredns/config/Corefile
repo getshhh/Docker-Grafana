@@ -8,7 +8,7 @@
     #file /etc/coredns/db.example.com example.com
     
     # If you wish to use a standard Hosts File format, uncomment the following line and customize the specified file
-    hosts /etc/coredns/sosa.com.hosts sosa.com
+    hosts /etc/coredns/den4ik.com.hosts den4ik.com
 }
 
 ################################ Comment and Version ################################
